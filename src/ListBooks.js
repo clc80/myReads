@@ -14,7 +14,13 @@ import * as BooksAPI from './BooksAPI'
      BooksAPI.getAll().then(books => this.setState({books}))
    }
 
+   handleBookShelf(book, shelf) {
+     BooksAPI.update(book, shelf).then(books => this.setState({ books }))
+   }
+
      render() {
+       const {books} = this.state;
+
        const matchCR = new RegExp(escapeRegExp('currentlyReading'))
        let currentlyReading = this.state.books.filter(book => matchCR.test(book.shelf))
 
@@ -36,7 +42,11 @@ import * as BooksAPI from './BooksAPI'
                    <div className="bookshelf-books">
                      <ol className="books-grid">
                        {currentlyReading.map((book, index) =>
-                         <ListBookDetail key={index} book={book} />)}
+                         <ListBookDetail
+                           key={index}
+                           book={book}
+                            handleBookShelf={this.handleBookShelf.bind(this)}
+                          />)}
                      </ol>
                    </div>
                  </div>
@@ -45,7 +55,11 @@ import * as BooksAPI from './BooksAPI'
                    <div className="bookshelf-books">
                      <ol className="books-grid">
                        {wantToRead.map((book, index) =>
-                       <ListBookDetail key={index} book={book} />)}
+                       <ListBookDetail
+                         key={index}
+                         book={book}
+                        handleBookShelf={this.handleBookShelf.bind(this)}
+                      />)}
                      </ol>
                    </div>
                  </div>
@@ -54,7 +68,11 @@ import * as BooksAPI from './BooksAPI'
                    <div className="bookshelf-books">
                      <ol className="books-grid">
                        {read.map((book, index) =>
-                       <ListBookDetail key={index} book={book} />)}
+                       <ListBookDetail
+                         key={index}
+                         book={book}
+                          handleBookShelf={this.handleBookShelf.bind(this)}
+                        />)}
                      </ol>
                    </div>
                  </div>
