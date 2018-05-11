@@ -12,8 +12,8 @@ import * as BooksAPI from './BooksAPI'
     }
 
     renderBooks() {
-      return this.state.books.map((items, index) => {
-        return <ListBookDetail key={index} books={items} />
+      return this.state.books.map((item, index) => {
+        return <ListBookDetail key={index} books={item} />
       })
     }
      render() {
@@ -29,8 +29,9 @@ import * as BooksAPI from './BooksAPI'
                </div>
              </div>
              <div className="search-books-results">
-               <ol className="books-grid"></ol>
-               {this.renderBooks()}
+               <ol className="books-grid">
+                 {this.renderBooks()}
+               </ol>
              </div>
            </div>
          );
