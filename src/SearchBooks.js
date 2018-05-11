@@ -5,17 +5,31 @@ import * as BooksAPI from './BooksAPI'
 
  class SearchBooks extends Component {
     state = {
-      books: []
+      books: [],
+      query: ''
     }
     componentDidMount() {
       BooksAPI.getAll().then(books => this.setState({ books}))
     }
 
-    renderBooks() {
-      return this.state.books.map((item, index) => {
-        return <ListBookDetail key={index} book={item} />
-      })
+    renderBooks(books) {
+      if(books) {
+        return this.state.books.map((item, index) => {
+          return <ListBookDetail key={index} book={item} />
+        })
+      }
     }
+
+    handleUpdateQuery(query) {
+      this.setState({query})
+      BooksAPI.search(this.state.query)
+        .then(books => books.error?[] : this.setState({books}))
+        .catch(err => console.log('search with error: ', err))
+    }
+    renderSearchResults() {
+      console.log(this.state.query)
+    }
+
      render() {
          return (
            <div className="search-books">
@@ -25,12 +39,18 @@ import * as BooksAPI from './BooksAPI'
                  className='close-search'
                  >Close</Link>
                <div className="search-books-input-wrapper">
-                 <input type="text" placeholder="Search by title or author"/>
+                 <input
+                   type="text"
+                   placeholder="Search by title or author"
+                    value={this.state.query}
+                    onChange={e => this.handleUpdateQuery(e.target.value)}
+                  />
                </div>
              </div>
              <div className="search-books-results">
                <ol className="books-grid">
-                 {this.renderBooks()}
+                 {this.renderSearchResults()}
+                 {this.renderBooks(this.state.books)}
                </ol>
              </div>
            </div>

@@ -10,25 +10,29 @@ import * as BooksAPI from './BooksAPI'
      books: []
    }
 
+   organizeBooks(books) {
+     this.setState({books})
+   }
+
    componentDidMount() {
-     BooksAPI.getAll().then(books => this.setState({books}))
+     BooksAPI.getAll().then(books => this.organizeBooks(books))
    }
 
    handleBookShelf(book, shelf) {
-     BooksAPI.update(book, shelf).then(books => this.setState({ books }))
+     BooksAPI.update(book, shelf).then(books => this.organizeBooks(books))
    }
 
      render() {
        const {books} = this.state;
 
        const matchCR = new RegExp(escapeRegExp('currentlyReading'))
-       let currentlyReading = this.state.books.filter(book => matchCR.test(book.shelf))
+       let currentlyReading = books ? books.filter(book => matchCR.test(book.shelf)) : null
 
        const matchWR = new RegExp(escapeRegExp('wantToRead'))
-       let wantToRead = this.state.books.filter(book => matchWR.test(book.shelf))
+       let wantToRead = books ? books.filter(book => matchWR.test(book.shelf)) : null
 
        const matchR = new RegExp(escapeRegExp('read'))
-       let read = this.state.books.filter(book => matchR.test(book.shelf))
+       let read = books ? books.filter(book => matchR.test(book.shelf)) : null
 
          return (
            <div className="list-books">
