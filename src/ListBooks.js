@@ -84,7 +84,7 @@ import * as BooksAPI from './BooksAPI'
              </div>
              <div className="open-search">
                <Link
-                 to="/"
+                 to="/search"
                  >Add a book </Link>
              </div>
            </div>
