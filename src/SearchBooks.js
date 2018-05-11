@@ -13,7 +13,7 @@ import * as BooksAPI from './BooksAPI'
 
     renderBooks() {
       return this.state.books.map((item, index) => {
-        return <ListBookDetail key={index} books={item} />
+        return <ListBookDetail key={index} book={item} />
       })
     }
      render() {
