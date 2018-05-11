@@ -1,13 +1,13 @@
 import React from 'react';
 
  const ListBookDetail = ({book, handleBookShelf}) => {
-   const imageThumb = book.imageLinks ? book.imageLinks.smallThumbnail : null;
+   const imageThumb = book.imageLinks ? book.imageLinks.smallThumbnail : null
 
          return (
              <li>
                  <div className="book">
                      <div className="book-top">
-                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(${imageThumb})' }}></div>
+                         <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${imageThumb})` }}></div>
                              <div className="book-shelf-changer">
                                  <select onChange={e => handleBookShelf(book, e.target.value)} value={book.shelf}>
                                      <option value="none" disabled>Move to...</option>
