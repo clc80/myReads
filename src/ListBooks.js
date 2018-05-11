@@ -162,7 +162,7 @@ import {Link} from 'react-router-dom'
              </div>
              <div className="open-search">
                <Link
-                 to="/search"
+                 to="/"
                  >Add a book </Link>
              </div>
            </div>

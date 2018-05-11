@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
            <div className="search-books">
              <div className="search-books-bar">
                <Link
-                 to='/books'
+                 to='/search'
                  className='close-search'
                  >Close</Link>
                <div className="search-books-input-wrapper">
