@@ -12,8 +12,10 @@ import * as BooksAPI from './BooksAPI'
     handleUpdateQuery(query) {
       BooksAPI.search(query)
         .then(books => books ? this.setState({books}) : [])
-        .catch(err => console.log('search with error: ', err))
       this.setState({query})
+    }
+    handleBookShelf(book, shelf) {
+      BooksAPI.update(book,shelf)
     }
 
     renderSearchResults() {
@@ -23,8 +25,13 @@ import * as BooksAPI from './BooksAPI'
         return books.error ?
           <div>
             No results found
-          </div> : books.map((item, index) => {
-            return <ListBookDetail key={index} book ={item}/>
+          </div>
+          : books.map((book, index) => {
+            return
+            <ListBookDetail
+              key={index}
+              book ={book}
+            />
           })
       }
     }

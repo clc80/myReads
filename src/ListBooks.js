@@ -7,24 +7,17 @@ import * as BooksAPI from './BooksAPI'
 
  class ListBooks extends Component {
    state = {
-     books: []
-   }
-
-   organizeBooks(books) {
-     this.setState({books})
+     currentlyReading: [],
+     wantToRead: [],
+     read: []
    }
 
    componentDidMount() {
-     BooksAPI.getAll().then(books => this.organizeBooks(books))
+     this.getBooks();
    }
 
-   handleBookShelf(book, shelf) {
-     BooksAPI.update(book, shelf).then(books => this.organizeBooks(books))
-   }
-
-     render() {
-       const {books} = this.state;
-
+   getBooks() {
+     BooksAPI.getAll().then(books => {
        const matchCR = new RegExp(escapeRegExp('currentlyReading'))
        let currentlyReading = books ? books.filter(book => matchCR.test(book.shelf)) : null
 
@@ -34,54 +27,49 @@ import * as BooksAPI from './BooksAPI'
        const matchR = new RegExp(escapeRegExp('read'))
        let read = books ? books.filter(book => matchR.test(book.shelf)) : null
 
+       this.setState({ currentlyReading, wantToRead, read })
+     })
+   }
+
+   handleBookShelf(book, shelf) {
+     BooksAPI.update(book, shelf).then(() => this.getBooks())
+   }
+
+   renderShelf(books, title) {
+     return (
+       <div className="bookshelf">
+         <h2 className="bookshelf-title">{title}</h2>
+         <div className="bookshelf-books">
+           <ol className="books-grid">
+             {books.map((book, index) =>
+               <ListBookDetail
+                 key={index}
+                 book={book}
+                 handleBookShelf={this.handleBookShelf.bind(this)}
+               />
+             )}
+           </ol>
+         </div>
+       </div>
+     )
+   }
+
+     render() {
+       const {currentlyReading, wantToRead, read} = this.state;
+
          return (
            <div className="list-books">
-             <div className="list-books-title">
+             <div clasName='list-book-title'>
                <h1>MyReads</h1>
              </div>
              <div className="list-books-content">
                <div>
-                 <div className="bookshelf">
-                   <h2 className="bookshelf-title">Currently Reading</h2>
-                   <div className="bookshelf-books">
-                     <ol className="books-grid">
-                       {currentlyReading.map((book, index) =>
-                         <ListBookDetail
-                           key={index}
-                           book={book}
-                            handleBookShelf={this.handleBookShelf.bind(this)}
-                          />)}
-                     </ol>
-                   </div>
-                 </div>
-                 <div className="bookshelf">
-                   <h2 className="bookshelf-title">Want to Read</h2>
-                   <div className="bookshelf-books">
-                     <ol className="books-grid">
-                       {wantToRead.map((book, index) =>
-                       <ListBookDetail
-                         key={index}
-                         book={book}
-                        handleBookShelf={this.handleBookShelf.bind(this)}
-                      />)}
-                     </ol>
-                   </div>
-                 </div>
-                 <div className="bookshelf">
-                   <h2 className="bookshelf-title">Read</h2>
-                   <div className="bookshelf-books">
-                     <ol className="books-grid">
-                       {read.map((book, index) =>
-                       <ListBookDetail
-                         key={index}
-                         book={book}
-                          handleBookShelf={this.handleBookShelf.bind(this)}
-                        />)}
-                     </ol>
-                   </div>
-                 </div>
+                 {this.renderShelf(currentlyReading, 'Currently Reading')}
+                 {this.renderShelf(wantToRead, 'Want to Read')}
+                 {this.renderShelf(read, 'Read')}
                </div>
              </div>
+
              <div className="open-search">
                <Link
                  to="/search"
